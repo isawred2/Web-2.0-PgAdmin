@@ -1,4 +1,4 @@
-# Web 2.0 PgAdmin
+## Web 2.0 PgAdmin
 
 Web based PostgresSQL database management tool.
 
@@ -12,6 +12,8 @@ In the root directory you will find conf.php that has basic configuration of use
 
 ## Demo
 
-You can see the demo of the application at [[http://web20boom.com/demo/pgadmin]]. 
+You can see the demo of the application at 
+
+* [http://web20boom.com/demo/pgadmin](http://web20boom.com/demo/pgadmin)
 * User: demo 
 * pass: demo
