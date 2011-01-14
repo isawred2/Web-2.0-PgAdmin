@@ -9,7 +9,7 @@ $sys_home = str_replace('conf.php', '', substr(__FILE__, strlen($_SERVER['DOCUME
 
 // -- users
 $def_users = Array();
-$def_users['admin']	= 'minsk78';
+$def_users['demo']	= 'demo';
 
 // -- databases
 $sys_dbs = Array();			   // ip:[port]:user:pass
