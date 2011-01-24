@@ -1,11 +1,10 @@
 <?
 $output = false;
-require("../conf.php");
-require("../system/security.php");
-require($sys_folder."/libs/phpDBLib.php");
-require("dbLib.php");
+require_once("../system/security.php");
+require_once($sys_folder."/libs/phpDB.php");
+require_once($sys_folder."/libs/phpDBLib.php");
 
-$lstParams = unserialize(stripslashes($cmd));
+$lstParams = js_unescape($cmd);
 
 if ($lstParams['db'] == '') $lstParams['db'] = 'template1';
 

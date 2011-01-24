@@ -1,10 +1,11 @@
 <?
 $output = false;
-require("../conf.php");
-require("../system/security.php");
-require($sys_folder."/libs/phpDBLib.php");
+require_once("../system/security.php");
+require_once($sys_folder."/libs/phpDB.php");
+require_once($sys_folder."/libs/phpDBLib.php");
 
-$lstParams = unserialize(stripslashes($cmd));
+$lstParams = js_unescape($cmd);
+
 $tmp = split(":", $_SESSION['ses_database']);
 $sys_dbType 	= 'postgres';
 $sys_dbIP		= $tmp[0];

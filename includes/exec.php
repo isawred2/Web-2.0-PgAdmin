@@ -8,7 +8,8 @@ require($sys_folder."/libs/phpDBLib.php");
 <html>
 <head>
 	<title>Database: <?=$_GET['db']?></title>
-	<link rel="stylesheet" href="<?=$sys_path."/css/".$def_defaultCSS?>" type="text/css" />
+	<link rel="stylesheet" href="<?=$sys_path?>/images/<?=$def_defaultCSS?>" type="text/css" />
+	<link rel="stylesheet" href="<?=$sys_path?>/images/buttons.css" type="text/css" />
 	<style>
 		body {
 			 font-family: verdana; 
@@ -23,21 +24,15 @@ require($sys_folder."/libs/phpDBLib.php");
 			 font-size: 12px;
 		}
 	</style>
+	<script src="../system/libs/jsUtils.php"></script>
+	<script src="../system/libs/jsList.php"></script>
+	<script src="../system/libs/jsEdit.php"></script>
+	<script src="../system/libs/jsControls.php"></script>
+	<script src="../system/libs/jsCalendar.php"></script>
 	<script>
-		window.onload 	= pload;
+		window.onload 	= init;
 		window.onresize = presize;
-		
-		function pload() {
-			top.jsLoader.loadClass('jsUtils');
-			top.jsLoader.loadClass('jsUtils');
-			top.jsLoader.loadClass('jsList');
-			top.jsLoader.loadClass('jsEdit');
-
-			presize();
-			document.getElementById('sql').focus();
-			top.jsLoader.onLoad = init;
-		} 
-		
+				
 		function presize() {
 			// -- resize 
 			if (window.innerHeight == undefined) {
@@ -57,6 +52,8 @@ require($sys_folder."/libs/phpDBLib.php");
 		}
 		
 		function init() {
+			presize();
+			document.getElementById('sql').focus();
 			// TABLE Data
 			var execData = new top.jsList('execData', document.getElementById('display'));
 			execData.header  = "Table Data";
@@ -115,5 +112,4 @@ require($sys_folder."/libs/phpDBLib.php");
 	</form>
 	<iframe frameborder=0 style='width: 100px; height: 1px; position: absolute;' name=lframe></iframe>
 </body>
-<script src="../system/libs/jsLoader.php"></script>
 </html>

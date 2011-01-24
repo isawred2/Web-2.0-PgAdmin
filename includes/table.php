@@ -2,7 +2,7 @@
 function init_table() {
 	var tableTabs = new top.jsTabs('tableTabs', null);
 	tableTabs.style_toolbar = '';
-	tableTabs.style = "background-color: white;";
+	tableTabs.style = "background-color: #f6f9fc;";
 	//tableTabs.tabWidth = '75px';
 
 	// -- TOOLBAR

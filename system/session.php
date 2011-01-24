@@ -10,7 +10,7 @@
 *****************************************************************/
 
 function ses_read($sesid) {
-    global $sys_db, $sys_dbPrefix;
+    global $db, $dbPrefix;
 	global $def_timeToLive;
 	global $sys_stats; // object with statistics
 	global $ses_data, $ses_userid, $ses_update;
@@ -18,21 +18,21 @@ function ses_read($sesid) {
 	$SQL = "SELECT ses_data, ses_time2live, ses_userid, null,
 				CASE WHEN now() + interval '5 minutes' > ses_expire THEN 'Y' ELSE 'N' END,
 				CASE WHEN now() > ses_expire THEN 'Y' ELSE 'N' END
-			FROM ".$sys_dbPrefix."sys_session
+			FROM ".$dbPrefix."sys_session
 			WHERE ses_id = '$sesid'";
-    $rs = $sys_db->execute($SQL);
+    $rs = $db->execute($SQL);
 	// read or initiate session
     if (!$rs || $rs->EOF || $rs->fields[5] == 'Y') {
     	$ret = '';
     	$sesTime2Live = isset($def_timeToLive) ? $def_timeToLive : 1200;
 		if ($sys_stats->browserName == '- unknown =') $bname = '-- bot --'; else $bname = $sys_stats->browserName;
-        $SQL = "DELETE FROM ".$sys_dbPrefix."sys_session WHERE ses_expire < current_timestamp;
-        	    INSERT INTO ".$sys_dbPrefix."sys_session(ses_id, ses_data, ses_start, ses_expire,
+        $SQL = "DELETE FROM ".$dbPrefix."sys_session WHERE ses_expire < current_timestamp;
+        	    INSERT INTO ".$dbPrefix."sys_session(ses_id, ses_data, ses_start, ses_expire,
         				ses_ip, ses_time2live, ses_browser, ses_host, ses_userid)
         	    VALUES('$sesid', '', now(), now() + interval '$sesTime2Live sec',
                 	    '".$_SERVER["REMOTE_ADDR"]."', $sesTime2Live, '".$bname."',
                 	    '".$_SERVER["HTTP_HOST"]."', ".($ses_userid != null ? $ses_userid : "NULL").")";
-        $sys_db->execute($SQL);
+        $db->execute($SQL);
         $sys_stats->ses_initiated = true;
     } else {
         $ret = $rs->fields[0];
@@ -46,26 +46,26 @@ function ses_read($sesid) {
 }
 
 function ses_write($sesid, $sesdata) {
-    global $sys_db, $sys_dbPrefix, $def_timeToLive;
+    global $db, $dbPrefix, $def_timeToLive;
 	global $sys_stats; // object with statistics
 	global $ses_data, $ses_userid, $ses_update;
 
 	$sesTime2Live = isset($def_timeToLive) ? $def_timeToLive : 1200;
 	if ($ses_update || $sesdata != $ses_data) {
 	    if ($sys_stats->browser === false) {
-	      $SQL = "UPDATE ".$sys_dbPrefix."sys_session SET
+	      $SQL = "UPDATE ".$dbPrefix."sys_session SET
 	                  ses_data   = '$sesdata',
 	                  ses_expire = current_timestamp + interval '$sesTime2Live sec',
 	                  ses_userid = ".($ses_userid != null ? $ses_userid : "NULL")."
 	              WHERE ses_browser = '".$sys_stats->browserName."'";
 	    } else {
-	      $SQL = "UPDATE ".$sys_dbPrefix."sys_session SET
+	      $SQL = "UPDATE ".$dbPrefix."sys_session SET
 	                  ses_data   = '$sesdata',
 	                  ses_expire = current_timestamp + interval '$sesTime2Live sec',
 	                  ses_userid = ".($ses_userid != null ? $ses_userid : "NULL")."
 	              WHERE ses_id = '$sesid'";
 		}
-	    $sys_db->execute($SQL);
+	    if ($db) $db->execute($SQL);
 	 	return $rs ? true : false;
 	}
 	return true; 
@@ -76,23 +76,23 @@ function ses_open($save_path, $session_name) {
 }
 
 function ses_close() {
-    global $sys_db;
+    global $db;
     return true;
 }
 
 function ses_destroy($sesid) {
-    global $sys_db, $sys_dbPrefix;
-    $SQL = "DELETE FROM ".$sys_dbPrefix."sys_session WHERE ses_id = '$sesid'";
-    $rs = $sys_db->execute($SQL);
+    global $db, $dbPrefix;
+    $SQL = "DELETE FROM ".$dbPrefix."sys_session WHERE ses_id = '$sesid'";
+    $rs = $db->execute($SQL);
 
     return $rs ? true : false;
 }
 
 function ses_clean($maxLifeTime = null) {
-    global $sys_db, $sys_dbPrefix;
+    global $db, $dbPrefix;
 
-    $SQL = "DELETE FROM ".$sys_dbPrefix."sys_session WHERE ses_expire < current_timestamp";
-    $rs = $sys_db->execute($SQL);
+    $SQL = "DELETE FROM ".$dbPrefix."sys_session WHERE ses_expire < current_timestamp";
+    $rs = $db->execute($SQL);
 
     return $rs ? true : false;
 }
@@ -104,5 +104,5 @@ if ($def_dbSession == true) {
 	session_set_save_handler("ses_open", "ses_close", "ses_read", "ses_write", "ses_destroy", "ses_clean");
 }
 
-if ($sys_startSession !== 'no' && $sys_startSession !== false) session_start();
+if ($initSession !== 'no' && $initSession !== false) session_start();
 ?>

@@ -1,6 +1,7 @@
 <?
 require_once("conf.php");
 require_once("system/security.php");	
+require_once("system/libs/phpDB.php");
 
 // -- initiate first database from the list
 
@@ -71,9 +72,17 @@ while ($rs && !$rs->EOF) {
 		<div id="dropDown" style="display: none; position: absolute; top: 30px; z-index: 100;"></div>
 	</div>
 	<div style="width: 100%; height: 100%;" id="page_body"> <div style="padding: 10px;">Loading...</div> </div>
-<iframe id=file_down frameborder=0 style='height: 1px; width: 1px; position: absolute;'></iframe>
+	<iframe id=file_down frameborder=0 style='height: 1px; width: 1px; position: absolute;'></iframe>
 </body>
-<script src="system/libs/jsLoader.php"></script>
+<script src="system/libs/jsUtils.php"></script>
+<script src="system/libs/jsLayout.php"></script>
+<script src="system/libs/jsList.php"></script>
+<script src="system/libs/jsEdit.php"></script>
+<script src="system/libs/jsCalendar.php"></script>
+<script src="system/libs/jsControls.php"></script>
+<script src="system/libs/jsToolBar.php"></script>
+<script src="system/libs/jsTree.php"></script>
+<script src="system/libs/jsTabs.php"></script>
 <?
 	require('includes/server.php');
 	require('includes/database.php');
@@ -83,31 +92,17 @@ while ($rs && !$rs->EOF) {
 	require('includes/fun.php');
 ?>
 <script>
-window.onload 	= pload;
+window.onload 	= init;
 window.onresize = resize;
 document.title 	= 'Web 2.0 PgAdmin';
 
 var mLayout;
 var dbTree;
 
-function pload() {
-	top.superuser = <?=($features[super_user] == 1 ? 'true' : 'false')?>;
-	top.jsLoader.loadClass('jsUtils');
-	top.jsLoader.loadClass('jsList');
-	top.jsLoader.loadClass('jsEdit');
-	top.jsLoader.loadClass('jsToolBar');
-	top.jsLoader.loadClass('jsLayout');
-	top.jsLoader.loadClass('jsTree');
-	top.jsLoader.loadClass('jsTabs');
-	top.jsLoader.loadClass('jsCalendar');
-	top.jsLoader.onLoad = init;
-	window.setTimeout('try { if (top.elements["dbTree"] == null) init(); } catch(e) { init(); }', 3000);
-	window.setTimeout('try { if (top.elements["dbTree"] == null) init(); } catch(e) { init(); }', 8000);
-}
-
 function init() {
+	top.superuser = <?=($features[super_user] == 1 ? 'true' : 'false')?>;
 	// -- Tree
-	dbTree = new jsTree_class('dbTree', null);
+	dbTree = new top.jsTree('dbTree', null);
 	dbTree.onOpen  = db_open;
 	dbTree.onClose = db_close;
 	dbTree.onClick = db_click;
@@ -141,14 +136,17 @@ function init() {
 	users.picture = 'system/includes/silk/icons/group.png';
 	
 	// --- Main Page Layout
-	var toolHTML =  '<div id=toolbar style="padding-bottom: 2px; padding-left: 2px; background-color: #f5effb;"></div>';
+	var toolHTML =  '<div id=toolbar style="padding-bottom: 2px; padding-left: 2px; background-image: url(system/images/toolbar_bg.png);"></div>';
 	mLayout = new top.jsLayout('mLayout', document.getElementById('page_body'));
-	mLayout.style = "background-color: #e4e0e8;";
-	mLayout.padding = 0;
-	mLayout.border  = 1;
+	mLayout.style   = 'background-color: #d9d9d9;';
+	mLayout.padding = 1;
+	mLayout.border  = 2;
 	var panel = mLayout.addPanel('top', toolHTML, '', 30, false);
-	var panel = mLayout.addPanel('left', dbTree, '', 220, true);
+	panel.style_title = 'border: 0px; padding: 1px; margin: 1px;'
+	var panel = mLayout.addPanel('left', '', '', 220, true);
+	panel.style_body = 'border: 1px solid silver;'	
 	mLayout.output();
+	mLayout.initPanel('left', dbTree);
 
 	// --- Toolbar
 	var filesToolbar = new top.jsToolBar('filesToolbar', document.getElementById('toolbar'));
@@ -258,7 +256,7 @@ function execCommand(sql, onSuccess) {
 	runSQL.addControl('button', 'Cancel', 'javascript: closeRunSQL()', 'style="width: 100px;"');
 
 	runSQL.onSaveDone 	= new Function("closeRunSQL();" + onSuccess + ";");
-	runSQL.srvFile 		= "index_srv.php";
+	runSQL.srvFile 		= "includes/index_srv.php";
 	runSQL.output();
 
 	top.elements['runSQL'].onDataReceived = 
