@@ -10,6 +10,11 @@ $def_defaultCSS	= "simple-blue.css";
 $def_dbInit 	= false;
 $def_dbSession	= false;
 
+$def_css = Array();
+$def_css[] 		= 'w20-main.css';
+$def_css[] 		= 'w20-buttons.css';
+$def_css[] 		= 'w20-ui-blue.css';
+
 // -- users
 $def_users = Array();
 $def_users['demo']	= 'demo';
