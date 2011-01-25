@@ -20,7 +20,7 @@ $sys_dbName		= $lstParams['db'];
 $db = new phpDBConnection($sys_dbType);
 $db->connect($sys_dbIP, $sys_dbLogin, $sys_dbPass, $sys_dbName, $sys_dbPort);
 
-require("includes/features.php");
+require("features.php");
 
 switch ($lstParams['req_name']."::".$lstParams['req_cmd']) 
 {
