@@ -1,14 +1,9 @@
 ## Web 2.0 PgAdmin
 
-Web based PostgresSQL database management tool.
+Web based PostgresSQL database management tool. This is a completely web based application that uses Ajax on the client side and 
+PHP on the server side. All configuration settings are defined in conf.php file that is in the main installation directory. 
 
-## Installation
-
-The application does not need connection to any database and uses Ajax on client side and PHP on server side.
-
-## Configuration
-
-In the root directory you will find conf.php that has basic configuration of users and databaseses it can access.
+For more information visit [http://web20boom.com/web/pgadmin](http://web20boom.com/web/pgadmin)
 
 ## Demo
 
