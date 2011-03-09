@@ -530,7 +530,7 @@ switch ($lstParams['req_name']."::".$lstParams['req_cmd'])
 					AND pg_proc.oid = tgfoid
 					AND pg_proc.pronamespace = pg_namespacef.oid
 					AND pg_class.relnamespace = pg_namespace.oid
-					AND tgisconstraint = false
+					-- AND tgisconstraint = false
 					AND pg_namespace.oid IN (SELECT oid FROM pg_namespace WHERE nspname = '".$tbl[1]."')
 					AND pg_class.relname = '".$tbl[2]."'
                ORDER BY 1";
@@ -551,11 +551,11 @@ switch ($lstParams['req_name']."::".$lstParams['req_cmd'])
 		$tbl = split("\.", $lstParams['table']); 
 		$sql = "SELECT tgname, tgenabled
 	            FROM pg_trigger, pg_class, pg_namespace, pg_proc, pg_namespace as pg_namespacef
-	            WHERE pg_trigger.tgrelid=pg_class.oid
-					AND pg_proc.oid=tgfoid
-					AND pg_proc.pronamespace=pg_namespacef.oid
-					AND pg_class.relnamespace=pg_namespace.oid
-					AND tgisconstraint=false
+	            WHERE pg_trigger.tgrelid = pg_class.oid
+					AND pg_proc.oid = tgfoid
+					AND pg_proc.pronamespace = pg_namespacef.oid
+					AND pg_class.relnamespace = pg_namespace.oid
+					--AND tgisconstraint = false
 					AND pg_namespace.oid IN (SELECT oid FROM pg_namespace WHERE nspname = '".$tbl[1]."')
 					AND pg_class.relname = '".$tbl[2]."'
 					AND tgname = '".$ids[0]."'

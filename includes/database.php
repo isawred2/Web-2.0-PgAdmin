@@ -16,14 +16,12 @@ function init_database() {
 	// -- databases
 	var databases = new top.jsList('databases', null);
 	databases.header = "DB Server: <span style='font-weight: normal'><?=$sys_dbIP."</span> &nbsp;&nbsp;User: <span style='font-weight: normal'>".$sys_dbLogin."</span>  &nbsp;&nbsp;PostgresSQL: <span style='font-weight: normal'>v. ".$db_version."</span>"?> ";
-	databases.addColumn('Database', '20%', 'TEXT', '');
-	databases.addColumn('Owner', '10%', 'TEXT', 'align=center');
-	databases.addColumn('Encoding', '10%', 'TEXT', 'align=center');
+	databases.addColumn('Database', '30%', 'TEXT', '');
+	databases.addColumn('Owner', '20%', 'TEXT', '');
+	databases.addColumn('Encoding', '15%', 'TEXT', '');
+	databases.addColumn('Size', '15%', 'TEXT', 'align=right');
 	databases.addColumn('Is Template', '10%', 'TEXT', 'align=center');
 	databases.addColumn('Can Connect', '10%', 'TEXT', 'align=center');
-	databases.addColumn('Conn. Limit', '10%', 'TEXT', 'align=right');
-	databases.addColumn('Configuration', '15%', 'TEXT', 'align=right');
-	databases.addColumn('Access Rights', '15%', 'TEXT', 'align=right');
 	databases.srvParams['super'] = top.superuser ? 1 : 0;
 	databases.srvFile = "includes/database_srv.php";
 	
@@ -53,14 +51,11 @@ function init_database() {
 	// -- templates
 	var templates = new top.jsList('templates', null);
 	templates.header = "Database Templates";
-	templates.addColumn('Database', '20%', 'TEXT', '');
-	templates.addColumn('Owner', '10%', 'TEXT', 'align=center');
-	templates.addColumn('Encoding', '10%', 'TEXT', 'align=center');
+	templates.addColumn('Database', '40%', 'TEXT', '');
+	templates.addColumn('Owner', '20%', 'TEXT', '');
+	templates.addColumn('Encoding', '20%', 'TEXT', '');
 	templates.addColumn('Is Template', '10%', 'TEXT', 'align=center');
 	templates.addColumn('Can Connect', '10%', 'TEXT', 'align=center');
-	templates.addColumn('Conn. Limit', '10%', 'TEXT', 'align=right');
-	templates.addColumn('Configuration', '15%', 'TEXT', 'align=right');
-	templates.addColumn('Access Rights', '15%', 'TEXT', 'align=right');
 	templates.srvParams['super'] = top.superuser ? 1 : 0;
 	templates.srvFile = "includes/database_srv.php";
 

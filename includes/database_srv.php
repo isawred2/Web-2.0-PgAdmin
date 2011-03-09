@@ -32,14 +32,12 @@ switch ($lstParams['req_name']."::".$lstParams['req_cmd'])
 		
 		// -- databases
 		if ($features[super_user] == 1) {
-			$sql = "SELECT datname, usename, pg_encoding_to_char(encoding), datistemplate, datallowconn, 
-						".($features[conn_limit] == 0 ? "null" : "datconnlimit").",  datconfig, datacl
+			$sql = "SELECT datname, usename, pg_encoding_to_char(encoding), datistemplate, datallowconn
 					FROM pg_database, pg_user
 					WHERE pg_database.datdba = pg_user.usesysid
 					ORDER BY datname";
 		} else {
-			$sql = "SELECT datname, usename, pg_encoding_to_char(encoding), datistemplate, datallowconn, 
-						".($features[conn_limit] == 0 ? "null" : "datconnlimit").",  datconfig, datacl
+			$sql = "SELECT datname, usename, pg_encoding_to_char(encoding), datistemplate, datallowconn
 					FROM pg_database, pg_user
 					WHERE pg_database.datdba = pg_user.usesysid
 						AND usename = '$sys_dbLogin'
@@ -107,18 +105,16 @@ switch ($lstParams['req_name']."::".$lstParams['req_cmd'])
 	case "databases::lst_get_data":
 	
 		if ($features[super_user] == 1) {
-			$sql = "SELECT datname, datname, usename, pg_encoding_to_char(encoding), 
+			$sql = "SELECT datname, datname, usename, pg_encoding_to_char(encoding), TO_CHAR(pg_database_size(datname)/1024, '999,999,999,999') || ' Kb', 
 						CASE WHEN datistemplate THEN 'yes' ELSE '' END, 
-						CASE WHEN datallowconn THEN 'yes' ELSE '' END, 
-						".($features[conn_limit] == 0 ? "null" : "datconnlimit").",  datconfig, datacl
+						CASE WHEN datallowconn THEN 'yes' ELSE '' END
 					FROM pg_database, pg_user
 					WHERE pg_database.datdba = pg_user.usesysid
 					ORDER BY datname";
 		} else {
-			$sql = "SELECT datname, datname, usename, pg_encoding_to_char(encoding), 
+			$sql = "SELECT datname, datname, usename, pg_encoding_to_char(encoding), TO_CHAR(pg_database_size(datname)/1024, '999,999,999,999') || ' Kb', 
 						CASE WHEN datistemplate THEN 'yes' ELSE '' END, 
-						CASE WHEN datallowconn THEN 'yes' ELSE '' END, 
-						".($features[conn_limit] == 0 ? "null" : "datconnlimit").",  datconfig, datacl
+						CASE WHEN datallowconn THEN 'yes' ELSE '' END
 					FROM pg_database, pg_user
 					WHERE pg_database.datdba = pg_user.usesysid
 						AND (usename = '$sys_dbLogin' OR datistemplate = true)
@@ -170,8 +166,7 @@ switch ($lstParams['req_name']."::".$lstParams['req_cmd'])
 	case "templates::lst_get_data":
 		$sql = "SELECT datname, datname, usename, pg_encoding_to_char(encoding), 
 					CASE WHEN datistemplate THEN 'yes' ELSE '' END, 
-					CASE WHEN datallowconn THEN 'yes' ELSE '' END, 
-					".($features[conn_limit] == 0 ? "null" : "datconnlimit").",  datconfig, datacl
+					CASE WHEN datallowconn THEN 'yes' ELSE '' END
 				FROM pg_database, pg_user
 				WHERE pg_database.datdba = pg_user.usesysid AND datistemplate = true
 				ORDER BY datname";
@@ -771,7 +766,7 @@ switch ($lstParams['req_name']."::".$lstParams['req_cmd'])
 		if ($p['table'] != '') $param .= " -t ".$p['table'];
 		if ($p['type'] == 's') $param .= " -s";
 		if ($p['type'] == 'd') $param .= " -a";
-		if ($p['insert_type'] == 'i') $param .= " -d";
+		if ($p['insert_type'] == 'i') $param .= " -inserts";
 		$cmd = "pg_dump$param -U $sys_dbLogin -if /tmp/temp.sql ".$p['database'];
 		shell_exec($cmd);
 		// -- zip if necessary and download

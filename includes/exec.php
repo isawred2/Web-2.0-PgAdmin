@@ -8,8 +8,9 @@ require($sys_folder."/libs/phpDBLib.php");
 <html>
 <head>
 	<title>Database: <?=$_GET['db']?></title>
-	<link rel="stylesheet" href="<?=$sys_path?>/images/<?=$def_defaultCSS?>" type="text/css" />
-	<link rel="stylesheet" href="<?=$sys_path?>/images/buttons.css" type="text/css" />
+    <link rel="stylesheet" href="<?=$sys_path?>/images/w20-main.css" type="text/css" /> 
+    <link rel="stylesheet" href="<?=$sys_path?>/images/w20-buttons.css" type="text/css" /> 
+    <link rel="stylesheet" href="<?=$sys_path?>/images/w20-ui-blue.css" type="text/css" /> 
 	<style>
 		body {
 			 font-family: verdana; 

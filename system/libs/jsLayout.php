@@ -11,6 +11,7 @@ function jsLayoutPanel(name, title, object, psize, resizable) {
 	this.hidden			= false;
 	this.size			= psize;	// width or height depending on panel name
 	this.resizable		= resizable;
+	this.overflow		= 'hidden';
 	// public propreties	this.object 		= object; 	// can be a layout, list, edit, etc.
 	this.title			= title;
 	this.style_title 	= '';
@@ -31,7 +32,7 @@ function jsLayoutPanel(name, title, object, psize, resizable) {
 	function jsLayoutPanel_getHTML() {
 		var html;
 		html =  '<div id="'+ this.owner.name + '_panel_'+ this.name +'" '+
-				'	style="position: absolute; left: 0px; top: 0px; width: 0px; height: 0px; overflow: hidden;"'+
+				'	style="position: absolute; left: 0px; top: 0px; width: 0px; height: 0px; overflow: '+ this.overflow +';"'+
 				'>'+
 				'<table cellpadding=0 cellspacing=0 style="width: 100%; height: 100%;">'+
 				'<tr><td id="'+ this.owner.name + '_panel_'+ this.name +'_title" class="pTitle"></td></tr>'+
@@ -167,8 +168,7 @@ function jsLayout(name, box) {
 		}
 		// reinit events
 		this.initEvents();
-		window.setTimeout("top.elements."+ this.name +".resize();", 200); // some bug
-		window.setTimeout("top.elements."+ this.name +".resize();", 900);
+		//window.setTimeout("top.elements."+ this.name +".resize();", 500);
 	}
 
 	function jsLayout_resize() {
