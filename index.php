@@ -25,14 +25,12 @@ require("includes/features.php");
 
 // -- databases
 if ($features[super_user] == 1) {
-	$sql = "SELECT datname, usename, pg_encoding_to_char(encoding), datistemplate, datallowconn, 
-				".($features[conn_limit] == 0 ? "null" : "datconnlimit").",  datconfig, datacl
+	$sql = "SELECT datname, usename, pg_encoding_to_char(encoding), datistemplate, datallowconn
 			FROM pg_database, pg_user
 			WHERE pg_database.datdba = pg_user.usesysid
 			ORDER BY datname";
 } else {
-	$sql = "SELECT datname, usename, pg_encoding_to_char(encoding), datistemplate, datallowconn, 
-				".($features[conn_limit] == 0 ? "null" : "datconnlimit").",  datconfig, datacl
+	$sql = "SELECT datname, usename, pg_encoding_to_char(encoding), datistemplate, datallowconn
 			FROM pg_database, pg_user
 			WHERE pg_database.datdba = pg_user.usesysid
 				AND usename = '$sys_dbLogin'
@@ -50,8 +48,7 @@ while ($rs && !$rs->EOF) {
 }
 
 // -- db templates
-$sql = "SELECT datname, usename, pg_encoding_to_char(encoding), datistemplate, datallowconn, 
-			".($features[conn_limit] == 0 ? "null" : "datconnlimit").",  datconfig, datacl
+$sql = "SELECT datname, usename, pg_encoding_to_char(encoding), datistemplate, datallowconn
 		FROM pg_database, pg_user
 		WHERE pg_database.datdba = pg_user.usesysid AND datistemplate = true
 		ORDER BY datname";
@@ -144,6 +141,7 @@ function init() {
 	var panel = mLayout.addPanel('top', toolHTML, '', 30, false);
 	panel.style_title = 'border: 0px; padding: 1px; margin: 1px;'
 	var panel = mLayout.addPanel('left', '', '', 220, true);
+	panel.overflow	 = 'auto';
 	panel.style_body = 'border: 1px solid silver;'	
 	mLayout.output();
 	mLayout.initPanel('left', dbTree);
