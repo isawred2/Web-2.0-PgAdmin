@@ -205,11 +205,12 @@ function init_database() {
 	var seqs = new top.jsList('seqs', null);
 	seqs.header = "Sequences";
 	seqs.msgDelete = '';
-	seqs.addColumn('Sequence', '35%', 'TEXT', '');
+	seqs.addColumn('Sequence', '30%', 'TEXT', '');
 	seqs.addColumn('Current', '10%', 'TEXT', 'align=right');
-	seqs.addColumn('Increment', '10%', 'TEXT', 'align=center');
-	seqs.addColumn('Linked To', '35%', 'TEXT', '');
+	seqs.addColumn('Increment', '5%', 'TEXT', 'align=center');
+	seqs.addColumn('Linked To', '30%', 'TEXT', '');
 	seqs.addColumn('Field Max', '10%', 'TEXT', 'align=right');
+	seqs.addColumn('Owner', '15%', 'TEXT', '');
 	seqs.addControl('delete', 'Delete');
 	seqs.srvFile = "includes/database_srv.php";	
 

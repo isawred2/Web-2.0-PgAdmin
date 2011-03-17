@@ -574,8 +574,9 @@ switch ($lstParams['req_name']."::".$lstParams['req_cmd'])
 		
 	case "seqs::lst_get_data":
 		// get all sequences for the schema and gets their maxs
-		$seq = Array();
-		$sql = "SELECT nspname, relname, a.attname, (SELECT adsrc FROM pg_attrdef d WHERE d.adrelid = a.attrelid AND d.adnum = a.attnum) AS default
+		$seq   = Array();
+		$sql = "SELECT nspname, relname, a.attname, 
+					(SELECT adsrc FROM pg_attrdef d WHERE d.adrelid = a.attrelid AND d.adnum = a.attnum) AS default					
 				FROM pg_attribute a, pg_namespace as n, pg_class as c
 				WHERE n.oid IN (SELECT oid FROM pg_namespace WHERE nspname = '".$lstParams['schema']."')
 				        AND n.oid = c.relnamespace
@@ -586,14 +587,15 @@ switch ($lstParams['req_name']."::".$lstParams['req_cmd'])
 		$rs  = $db->execute($sql);
 		while ($rs && !$rs->EOF) {
 			$f = $rs->fields;
-			$seq[$f[0].".".$f[1].".".$f[2]] = $f[3];
+			$seq[$f[0].".".$f[1].".".$f[2]]   = $f[3];
 			$rs->moveNext();
 		}
 		// -- sequences
 		$sql = "SELECT relname,
 	                 '<span style=''color: gray''>/* ' || 
 					 (SELECT description FROM pg_description WHERE oid = objoid AND objsubid = 0) 
-					 || ' */</span>'
+					 || ' */</span>',
+					 (SELECT usename FROM pg_user WHERE relowner = usesysid)
 				FROM pg_class
 				WHERE relkind = 'S' AND relnamespace IN (SELECT oid FROM pg_namespace WHERE nspname = '".$lstParams['schema']."')
 				ORDER BY relname";
@@ -618,7 +620,8 @@ switch ($lstParams['req_name']."::".$lstParams['req_cmd'])
 			$smax = intval($smax);
 			$sql .= "SELECT '$sfname', '$sname ".$rs->fields[1]."', 
 						CASE WHEN last_value < $smax THEN '<span style=''color: red''>' ELSE '<span>' END || to_char(last_value, '9,999,999,999') || '</span>',  
-						increment_by, '$sseq', to_char($smax, '9,999,999,999')
+						increment_by, '$sseq', to_char($smax, '9,999,999,999'),
+						'".$rs->fields[2]."'
 					 FROM $sfname ";
 			$rs->moveNext();
 		}
