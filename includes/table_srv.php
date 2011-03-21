@@ -187,6 +187,8 @@ switch ($lstParams['req_name']."::".$lstParams['req_cmd'])
 			print(" <textarea id=sql>$sql</textarea>
 					<script> 
 						top.execCommand(document.getElementById('sql').value, 'top.elements.tableFieldAdd.saveDone()');
+						parent.document.getElementById('tableFieldAdd_control0').disabled = false;
+						parent.document.getElementById('tableFieldAdd_control1').disabled = false;
 					</script>");
 		} else {
 			print(" <script> top.elements.tableFieldAdd.saveDone();	</script>");

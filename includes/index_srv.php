@@ -34,8 +34,12 @@ switch ($lstParams['req_name']."::".$lstParams['req_cmd'])
 		$rs  = $db->execute($sql);
 		if (!$rs) {
 			$err = $db->res_errMsg;
-			print("<textarea id=err>$err</textarea>".
-				  "<script> parent.document.getElementById('sql_error').innerHTML = document.getElementById('err').value; </script>");
+			print("<textarea id=err>$err</textarea>
+			<script> 
+				parent.document.getElementById('sql_error').innerHTML = document.getElementById('err').value; 
+				parent.document.getElementById('runSQL_control0').disabled = false;
+				parent.document.getElementById('runSQL_control1').disabled = false;
+			</script>");
 		} else {
 			print("<script> top.elements.runSQL.saveDone(); </script>");
 		}
